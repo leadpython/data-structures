@@ -19,6 +19,13 @@ var Queue = function() {
     }
     var result = storage[0];
     delete storage[0];
+
+    // slide down key-value pairs
+    for (var n = 0; n < someInstance.size(); n++) {
+      storage[n] = storage[n+1];
+      delete storage[n+1];
+    }
+
     return result;
   };
 
