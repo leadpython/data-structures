@@ -4,6 +4,36 @@ var LinkedList = function() {
   list.tail = null;
 
   list.addToTail = function(value) {
+    var node = Node(value);
+    list[JSON.stringify(node)] = node;
+    //create node
+    // list[nodekey] = node
+
+
+    //check if list.head is null
+      //list.head = node
+    if(list.head === null){
+      list.head = list[JSON.stringify(node)];
+
+    }
+    else{
+      var next = list.head;
+      while (list[JSON.stringify(node)].next !== null) {
+        next = list[JSON.stringify(node)].next = node;
+      }
+    }
+
+
+    //check if next is null
+      //next = node
+      //list.tail = node
+
+
+      // {head: {value:, next: {value:, next: {value:, next: null}}}, tail: {value, next: null}
+
+
+
+
   };
 
   list.removeHead = function() {
