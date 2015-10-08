@@ -5,41 +5,45 @@ var LinkedList = function() {
 
   list.addToTail = function(value) {
     var node = Node(value);
-    list[JSON.stringify(node)] = node;
-    //create node
-    // list[nodekey] = node
-
-
-    //check if list.head is null
-      //list.head = node
-    if(list.head === null){
-      list.head = list[JSON.stringify(node)];
-
+  
+     if(list.head === null){
+      list.head = node;
+      list.tail = node;
     }
+ 
     else{
-      var next = list.head;
-      while (list[JSON.stringify(node)].next !== null) {
-        next = list[JSON.stringify(node)].next = node;
-      }
+      var checkIfNextIsNull = function(listNode) {
+        if (listNode.next === null) {
+          listNode.next = node;
+          list.tail = node;
+        } else {
+          checkIfNextIsNull(listNode.next);
+
+        }
+      };
+      checkIfNextIsNull(list.head);
     }
-
-
-    //check if next is null
-      //next = node
-      //list.tail = node
-
-
-      // {head: {value:, next: {value:, next: {value:, next: null}}}, tail: {value, next: null}
-
-
-
-
-  };
+  }
 
   list.removeHead = function() {
+    var result = list.head;
+    list.head = list.head.next;
+    return result.value;
   };
 
   list.contains = function(target) {
+    var doesItContain = false;
+    var checkValue = function(node) {
+      if (node.value === target) {
+        doesItContain = true;
+      } else {
+        if (node.next !== null) {
+          checkValue(node.next);
+        }
+      }
+    };
+    checkValue(list.head);
+    return doesItContain;
   };
 
   return list;
