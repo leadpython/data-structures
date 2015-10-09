@@ -40,8 +40,7 @@ HashTable.prototype.insert = function(k, v) {
     
     //check if the set[i][0] === k
       //set[i][1] = v
-    var checkKey = this.retrieve(k);   //" value "
-
+    
     if (this.retrieve(k) === false){
       set.push(insideArray);
       this._storage.set(set)
@@ -57,7 +56,7 @@ HashTable.prototype.insert = function(k, v) {
     }
 
 
-    ;
+    
 
   }
   //storage--> [ [ [k, v ]  ]         ]
@@ -90,6 +89,8 @@ HashTable.prototype.remove = function(k) {
   var index = this.getIndexBelowMaxForKey(k, this._limit);
 
   var set = this._storage.get(index);   // [ [k, v],  undefined  , [c, d] , [a, b] ]
+
+
 
 
   // if(this._storage.retrieve(k)) !== null){
