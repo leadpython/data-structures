@@ -26,12 +26,16 @@ describe('hashTable', function() {
   it('should overwrite values that have the same key', function() {
     hashTable.insert('Bob', 'Loblaw');
     hashTable.insert('Bob', 'Barker');
+    expect(hashTable._size).to.equal(1);
+
     expect(hashTable.retrieve('Bob')).to.equal('Barker');
   });
 
   it('should not contain values that were removed', function() {
     hashTable.insert('Steven', 'Tyler');
+    expect(hashTable._size).to.equal(1);
     hashTable.remove('Steven');
+    expect(hashTable._size).to.equal(0);
     expect(hashTable.retrieve('Steven')).to.equal(null);
   });
 
@@ -48,7 +52,7 @@ describe('hashTable', function() {
   });
 
   // (Advanced! Remove the extra "x" when you want the following tests to run)
-  xit ('should double in size when needed', function() {
+  it('should double in size when needed', function() {
     _.each(people, function(person) {
       var firstName = person[0], lastName = person[1];
       hashTable.insert(firstName,lastName);
@@ -56,7 +60,7 @@ describe('hashTable', function() {
     expect(hashTable._limit).to.equal(16);
   });
 
-  xit ('should halve in size when needed', function() {
+  it('should halve in size when needed', function() {
     _.each(people, function(person) {
       var firstName = person[0], lastName = person[1];
       hashTable.insert(firstName,lastName);

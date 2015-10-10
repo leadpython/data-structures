@@ -23,16 +23,23 @@ setPrototype.contains = function(item) {
 };
 
 setPrototype.remove = function(item) {
-  var target = 0;
-  for (var i = 0; i < this._storage.length; i++) {
-    if (this._storage[i] === item) {
-      target = i;
+  // var target = 0;
+  // for (var i = 0; i < this._storage.length; i++) {
+  //   if (this._storage[i] === item) {
+  //     target = i;
+  //   }
+  // }
+  // for (var i = target; i < this._storage.length; i++) {
+  //   this._storage[i] = this._storage[i+1];
+  // }
+  // this._storage.pop();
+
+  for(var i = 0; i < this._storage.length; i++){
+    if(this._storage[i] === item){
+      this._storage.splice(i, 1);
     }
   }
-  for (var i = target; i < this._storage.length; i++) {
-    this._storage[i] = this._storage[i+1];
-  }
-  this._storage.pop();
+
 };
 
 /*

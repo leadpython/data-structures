@@ -1,6 +1,7 @@
 
 
 var HashTable = function() {
+  this._size = 0;
   this._limit = 8;
   this._storage = LimitedArray(this._limit);
   
@@ -19,8 +20,9 @@ HashTable.prototype.getIndexBelowMaxForKey = function(str, max) {
 
 HashTable.prototype.insert = function(k, v) {
   var index = this.getIndexBelowMaxForKey(k, this._limit);
+  
   //we have index 0
-
+ 
   var insideArray = [k , v];
   
   //check index at storage is empty
@@ -29,9 +31,9 @@ HashTable.prototype.insert = function(k, v) {
     var newArray = [];
     //push the node inside array
     newArray.push(insideArray);
-    //set the index at storagte to be [ [ k, v ] ]
+    //set the index at storage to be [ [ k, v ] ]
     this._storage.set(index, newArray);
-       
+
   }
   //[ [ [k, v] ]  ]
   else{
@@ -43,7 +45,9 @@ HashTable.prototype.insert = function(k, v) {
     
     if (this.retrieve(k) === false){
       set.push(insideArray);
-      this._storage.set(set)
+      this._storage.set(set);
+      
+
     }
 
     else {
@@ -51,15 +55,13 @@ HashTable.prototype.insert = function(k, v) {
       for (var i = 0; i < set.length; i++) {
         if (set[i][0] === k) {
           set[i][1] = v;
+          this._size--;
         }
       }
     }
 
-
-    
-
   }
-  //storage--> [ [ [k, v ]  ]         ]
+  //storage--> [ [ [k, v ]  ]     get    ]
   // check if in the 0 index array, there is something
     //if nothing
         // push an array [k, v]
@@ -67,15 +69,23 @@ HashTable.prototype.insert = function(k, v) {
 
   //[ [k,v]  ] index 0
   //[a,b ]  --> [ [ [k,v] , [a,b] , [] ]  ] index 0
+  this._size++;
+  console.log(this._size);
+
+  if (this._size > this._limit * 0.75) {
+    this.resize(this._limit * 2);
+  }
 };
 
 HashTable.prototype.retrieve = function(k) {
   var index = this.getIndexBelowMaxForKey(k, this._limit);
   var set = this._storage.get(index); //[ [k,v]  ]
 
-  for (var i = 0; i < set.length; i++) {
-    if (set[i][0] === k) {
-      return set[i][1];
+  if(set !== undefined){
+    for (var i = 0; i < set.length; i++) {
+      if (set[i][0] === k) {
+        return set[i][1];
+      }
     }
   }
   return null;
@@ -87,35 +97,41 @@ HashTable.prototype.retrieve = function(k) {
 
 HashTable.prototype.remove = function(k) {
   var index = this.getIndexBelowMaxForKey(k, this._limit);
-
+ 
   var set = this._storage.get(index);   // [ [k, v],  undefined  , [c, d] , [a, b] ]
-
-
-
-
-  // if(this._storage.retrieve(k)) !== null){
-
-
-
-  // };
-
-
-  for (var i = 0; i < set.length; i++) {
-    if (set[i][0] === k) {
-      set[i] = [];
+  if (set !== undefined) {
+    for (var i = 0; i < set.length; i++) {
+      if (set[i][0] === k) {
+        set.splice(i, 1); 
+      }
     }
   }
-  for (var i = 0; i < set.length; i++) {
-    if (set[i] === []) {
-      set[i][0] = set[i+1][0];
-      set[i][1] = set[i+1][1];
-      delete set[i+1];
-    }
-  }
+  
+  this._size--;
 
+  if (this._size < this._limit * 0.25) {
+      this.resize(Math.floor(this._limit * 0.5));
+    }
 };
 
+HashTable.prototype.resize = function(newLimit) {
+  var oldStorage = this._storage;
+  this._storage = LimitedArray(newLimit);
+  this._limit = newLimit;
 
+  
+
+  oldStorage.each.bind(this, function(element){
+    if(element !== undefined){
+      for(var i = 0; i < element.length; i++){
+        this.insert(element[i][0], element[i][1]);
+      }
+    }
+
+  });
+
+
+};
 
 /*
  * Complexity: What is the time complexity of the above functions?
