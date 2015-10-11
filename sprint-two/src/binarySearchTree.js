@@ -67,7 +67,15 @@ BinarySearchTree.prototype.depthFirstLog = function(cb){
     }
   };
   callBack(this);
-}
+};
+
+BinarySearchTree.prototype.breadthFirstLog = function(cb){
+  var callback = function(node, bool) {
+    
+  };
+  cb(this.value);
+  callback(this);
+};
 
 
 /*
